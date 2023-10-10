@@ -1,0 +1,29 @@
+library(dplyr)
+library(tidyverse)
+
+esrb_test <- read.csv("test_esrb.csv")
+print(esrb_test)
+esrb_test <- tibble(esrb_test)
+class(esrb_test)
+view(esrb_test)
+
+#Check how many rating are there
+n_rating <- esrb_test %>%
+  select('esrb_rating') %>%
+  unique()
+
+#Function for spliting data (90% Train / 10% Test)
+split_data <- function(df) {
+  set.seed(42)
+  n <- nrow(df)
+  train_id <- sample(1:n, size = 0.9*n)
+  train_df <- df[train_id, ]
+  test_df <- df[-train_id, ]
+  # return
+  list(training = train_df, 
+       testing = test_df) 
+}
+
+prep_data <- split_data(esrb_test)
+train_data <- prep_data[[1]]
+test_data <- prep_data[[2]]
