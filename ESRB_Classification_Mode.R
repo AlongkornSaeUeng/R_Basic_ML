@@ -49,3 +49,24 @@ p <- predict(model, newdata=test_data)
 acc <- mean(p == test_data$esrb_rating)
 varImp(model)
 
+# Top 20 Categories Weight
+#fantasy_violence         100.000
+#violence                  72.526
+#blood                     55.951
+#no_descriptors            51.700
+#blood_and_gore            45.878
+#mild_fantasy_violence     24.677
+#strong_sexual_content     17.924
+#strong_janguage           16.362
+#suggestive_themes         14.781
+#intense_violence          13.709
+#language                  10.358
+#mild_blood                 8.601
+#use_of_drugs_and_alcohol   6.627
+#use_of_alcohol             6.012
+#simulated_gambling         4.827
+#partial_nudity             4.361
+#mild_language              4.309
+#drug_reference             3.459
+#crude_humor                2.206
+#cartoon_violence           1.984
