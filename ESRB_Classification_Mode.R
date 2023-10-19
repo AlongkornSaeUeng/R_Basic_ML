@@ -13,6 +13,9 @@ view(esrb_test)
 n_rating <- esrb_test %>%
   select('esrb_rating') %>%
   unique()
+n_col <- esrb_test %>%
+  select('console') %>%
+  unique()
 
 #Function for spliting data (90% Train / 10% Test)
 split_data <- function(df) {
@@ -47,8 +50,52 @@ model <- train(esrb_rating ~ alcohol_reference + animated_blood + blood + blood_
 # score and evaluate
 p <- predict(model, newdata=test_data)
 acc <- mean(p == test_data$esrb_rating)
+# acc = 0.74
 varImp(model)
 
+#new data from ESRB [New Data Testing Model]
+new_test <- data.frame (
+  tiltle = c('Starfield','Minecraft','Just Dance 2024','Final fantasy XVI','Valorant','Super Mario Bros. Wonder'
+             ,'The Legend of Zelda: Tears of the Kingdom','Persona 5'),
+  console = c(0,0,1,1,0,1,1,1),
+  alcohol_reference = c(0,0,0,0,0,0,0,0),
+  animated_blood = c(0,0,0,0,0,0,0,0),
+  blood = c(1,0,0,0,1,0,0,1),
+  blood_and_gore = c(0,0,0,1,0,0,0,0),
+  cartoon_violence = c(0,0,0,0,0,0,0,0),
+  crude_humor = c(0,0,0,0,0,0,0,0),
+  drug_reference = c(0,0,0,0,0,0,0,1),
+  fantasy_violence = c(0,1,0,0,0,0,1,0),
+  intense_violence = c(0,0,0,0,0,0,0,0),
+  language = c(0,0,0,0,1,0,0,0),
+  lyrics = c(0,0,0,0,0,0,0,0),
+  mature_humor = c(0,0,0,0,0,0,0,0),
+  mild_blood = c(0,0,0,0,0,0,0,0),
+  mild_cartoon_violence = c(0,0,0,0,0,0,0,0),
+  mild_fantasy_violence = c(0,0,0,0,0,1,0,0),
+  mild_language = c(0,0,0,0,0,0,0,0),
+  mild_lyrics = c(0,0,1,0,0,0,0,0),
+  mild_suggestive_themes = c(0,0,0,0,0,0,1,0),
+  mild_violence = c(0,0,0,0,0,0,0,0),
+  no_descriptors = c(0,0,0,0,0,0,0,0),
+  nudity = c(0,0,0,0,0,0,0,0),
+  partial_nudity = c(0,0,0,1,0,0,0,1),
+  sexual_content = c(0,0,0,0,0,0,0,0),
+  sexual_themes = c(0,0,0,1,0,0,0,1),
+  simulated_gambling = c(0,0,0,0,0,0,0,0),
+  strong_janguage = c(1,0,0,1,0,0,0,1),
+  strong_sexual_content = c(0,0,0,0,0,0,0,0),
+  suggestive_themes = c(1,0,0,0,0,0,0,0),
+  use_of_alcohol = c(0,0,0,0,0,0,0,0),
+  use_of_drugs_and_alcohol = c(1,0,0,0,0,0,0,0),
+  violence = c(1,0,0,1,1,0,0,1),
+  esrb_rating = c('M','ET','E','M','T','E','ET','M')
+)
+
+# score and evaluate
+p_new <- predict(model, newdata=new_test)
+acc_new <- mean(p_new == new_test$esrb_rating)
+ 
 # Top 20 Categories Weight
 #fantasy_violence         100.000
 #violence                  72.526
@@ -70,3 +117,10 @@ varImp(model)
 #drug_reference             3.459
 #crude_humor                2.206
 #cartoon_violence           1.984
+
+#result prediction
+#esrb_rating = c('M','ET','E','M','T','E','ET','M')
+#predict_esrb_rating = T  ET T  M  T  E  ET T 
+# acc = 0.74
+# newacc = 0.625 
+# the dataset of new test is too small but the result is satisfy
